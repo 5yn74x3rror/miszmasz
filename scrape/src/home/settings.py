@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     # django need access to scheduler and results
     'django_celery_beat',
     'django_celery_results',
+    # main app
+    'recipes',
 ]
 
 MIDDLEWARE = [
