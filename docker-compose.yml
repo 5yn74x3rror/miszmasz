@@ -48,7 +48,7 @@ services:
             POSTGRES_PASSWORD: postgres
             POSTGRES_PORT: 5432
         depends_on:
-            - server
+            - django
             - redis
     redis:
         restart: unless-stopped
@@ -66,7 +66,7 @@ services:
             POSTGRES_PASSWORD: postgres
         expose:
             - 5432
-    
+
 volumes:
     static_volume: {}
     postgres_data: {}
