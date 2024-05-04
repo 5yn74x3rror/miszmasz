@@ -9,9 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
-from decouple import config 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3&*c@vvb$5c!uh&f1!5h!oj#u3zfmfkh(zf6jac$1m!yvn73qh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0"]
 
+if os.environ.get("ALLOWED_HOSTS") is not None:
+    try:
+        ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split(",")
+    except Exception as e:
+        print("Cant set ALLOWED_HOSTS, using default instead")
 
 # Application definition
 
@@ -38,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # DRF
+    'rest_framework',
     # django need access to scheduler and results
     'django_celery_beat',
     'django_celery_results',
@@ -79,12 +85,25 @@ WSGI_APPLICATION = 'home.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+DB_SQLITE = "sqlite"
+DB_POSTGRESQL = "postgresql"
+
+DATABASES_ALL = {
+    DB_SQLITE: {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
+    DB_POSTGRESQL: {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "NAME": os.environ.get("POSTGRES_NAME", "postgres"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        "PORT": int(os.environ.get("POSTGRES_PORT", "5432")),
+    },
 }
+
+DATABASES = {"default": DATABASES_ALL[os.environ.get("DJANGO_DB", DB_SQLITE)]}
 
 
 # Password validation
@@ -121,19 +140,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "/django_static/"
+STATIC_ROOT = BASE_DIR / "django_static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = config("CELERY_BROKER_REDIS_URL", default="redis://localhost:6379")
+CELERY_BROKER_URL = os.environ.get("BROKER_URL", "redis://localhost:6379/0")
 # or os.environ("CELERY_BROKER_REDIS_URL", "redis://localhost:6379")
 # what is the use case here?
 
 # save Celery task results in django DB
-CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_BACKEND = os.environ.get("RESULT_BACKEND", "redis://localhost:6379/0")
 
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 

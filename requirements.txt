@@ -1,0 +1,11 @@
+django
+djangorestframework
+
+celery[redis]
+django-celery-beat
+django-celery-results
+
+markdown
+python-decouple
+django-filter
+psycopg2-binary
