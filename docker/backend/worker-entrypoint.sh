@@ -6,4 +6,4 @@ do
 done
 
 # run a worker :)
-celery -A home worker --loglevel=info --concurrency 1 -E
+celery -A home worker --beat --loglevel=info
