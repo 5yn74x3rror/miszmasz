@@ -32,3 +32,4 @@ dist-ssr
 # Django + python
 venv/
 __pycache__/
+*db.sqlite3

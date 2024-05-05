@@ -43,12 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # DRF
-    'rest_framework',
+    # 'rest_framework',
     # django need access to scheduler and results
     'django_celery_beat',
     'django_celery_results',
     # main app
+    # 'recipes',
+    # dashboard
+    # 'scrapy_django_dashboard'
+    'scraper',
     'recipes',
+    'phone_field',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +164,6 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # allows schedule items from Django admin
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
+
+# Scrapy settings
+SCRAPY_SETTINGS_MODULE = 'home.scrapy_settings'

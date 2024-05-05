@@ -9,3 +9,8 @@ markdown
 python-decouple
 django-filter
 psycopg2-binary
+scrapy
+scrapy-djangoitem
+django-phone-field
+django-environ
+word2number
