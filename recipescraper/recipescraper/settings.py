@@ -64,6 +64,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "recipescraper.pipelines.DuplicatesPipeline": 100,
+   "recipescraper.pipelines.SaveToPostgresPipeline": 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
