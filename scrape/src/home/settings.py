@@ -42,18 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'recipes',
+    'blog',
     # DRF
     # 'rest_framework',
     # django need access to scheduler and results
     'django_celery_beat',
     'django_celery_results',
-    # main app
-    # 'recipes',
-    # dashboard
-    # 'scrapy_django_dashboard'
     'scraper',
-    'recipes',
-    'phone_field',
 ]
 
 MIDDLEWARE = [
@@ -139,6 +135,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+# use timezones
 USE_TZ = True
 
 
